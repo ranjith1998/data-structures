@@ -1,5 +1,5 @@
 #include <iostream>
-#include "linked_list/linked_list.h"
+#include "linked_list.h"
 
 int main() {
     std::cout << "Linked List Implementation Demo" << std::endl;
