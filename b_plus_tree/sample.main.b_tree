@@ -1,0 +1,48 @@
+#include <windows.h>
+#include <iostream>
+#include <chrono>
+
+using namespace std;
+
+#include "b_plus_tree/b_plus_tree.h"
+
+int main() {
+    SYSTEM_INFO sysInfo;
+    GetSystemInfo(&sysInfo);
+
+    std::cout << "Page size: " << sysInfo.dwPageSize << " bytes" << std::endl;
+
+    Node * node = new Node();
+    DataNode * dataNode = new DataNode();
+
+    cout << sizeof(node) << " : " << sizeof(*node) << "\n";
+    cout << sizeof(dataNode) << " : " << sizeof(*dataNode) << "\n";
+
+    BPlusTree * tree = new BPlusTree();
+
+    int cp = strcmpb("10", "9");
+    int cpa = strlen("10");
+
+    char data[32];
+    char filename[32];
+
+    auto t0 = std::chrono::high_resolution_clock::now();
+
+    for (int i = 1; i <= 100000; i++) {
+        sprintf(data, "%d\0", i);            // convert i to string
+        sprintf(filename, "%d\0", i);    // build filename string
+
+        tree->insert((unsigned char*)data, 10, filename);
+    }
+
+    auto t1 = std::chrono::high_resolution_clock::now();
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+
+    cout << "Inserted 100k records in " << ms << " ms\n";
+
+    // tree->inOrderPrint();
+
+    cout << "tree height:: " << tree->height() << "\n";
+
+    return 0;
+}
